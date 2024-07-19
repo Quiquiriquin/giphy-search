@@ -4,7 +4,7 @@ var path = require("path");
 var cookieParser = require("cookie-parser");
 var logger = require("morgan");
 // main
-const x = require("sqlite3");
+const sqlite3 = require("sqlite3").verbose();
 
 var indexRouter = require("./routes/index");
 var usersRouter = require("./routes/users");
@@ -29,14 +29,22 @@ app.use(function (req, res, next) {
   next(createError(404));
 });
 
-const sqlite3 = x.verbose();
-
 // Connect to a database (in this example, a new file-based database)
-const db = new sqlite3.Database("mydatabase.db");
+// const db = new sqlite3.Database("./mydatabase.db");
+let db = new sqlite3.Database(
+  "./mydatabase.db",
+  sqlite3.OPEN_READWRITE,
+  (err) => {
+    if (err) {
+      return console.error(err.message);
+    }
+    console.log("Connected to the in-memory SQlite database.");
+  }
+);
 
 // Define the SQL statement to create a table
 const createTableSql = `
-    CREATE TABLE IF NOT EXISTS searchs (
+    CREATE TABLE IF NOT EXISTS histories (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         search TEXT NOT NULL
     )
@@ -47,7 +55,7 @@ db.run(createTableSql, function (err) {
   if (err) {
     return console.error("Error creating table:", err.message);
   }
-  console.log("Table created successfully");
+  console.log("Table created successfully", this);
 });
 
 // Close the database connection
