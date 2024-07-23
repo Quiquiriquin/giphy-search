@@ -27,16 +27,19 @@ module.exports = {
     });
   },
   addHistory: (record) => {
-    db.run(
-      `INSERT INTO histories (search) VALUES('${record}')`,
-      (error, row) => {
-        if (error) {
-          console.log(error);
-          console.error(error.message);
-          return;
+    return new Promise((resolve, reject) => {
+      db.run(
+        `INSERT INTO histories (search) VALUES('${record}')`,
+        (error, row) => {
+          if (error) {
+            console.log(error);
+            console.error(error.message);
+            return reject(error.message);
+          }
+          console.log(row);
+          return resolve(row);
         }
-        console.log(row);
-      }
-    );
+      );
+    });
   },
 };
