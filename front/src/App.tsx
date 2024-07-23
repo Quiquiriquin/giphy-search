@@ -73,7 +73,11 @@ function App() {
       <div>
         {records?.map(
           ({ search }) =>
-            search && <label style={{ marginRight: "1rem" }}>{search}</label>
+            search && (
+              <label key={search} style={{ marginRight: "1rem" }}>
+                {search}
+              </label>
+            )
         )}
       </div>
       <Paginator

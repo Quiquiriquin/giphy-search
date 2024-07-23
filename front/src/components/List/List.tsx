@@ -5,8 +5,8 @@ import { GifCardType } from "../../helpers/gif.translator";
 const List = ({ data }: { data?: GifCardType[] }) => {
   return (
     <div>
-      {data?.map((gif: any) => (
-        <GifCard {...gif} />
+      {data?.map((gif) => (
+        <GifCard key={gif.title} {...gif} />
       ))}
     </div>
   );
